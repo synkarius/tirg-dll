@@ -3,6 +3,32 @@
 #include <algorithm>
 #include <vector>
 #include <set>
+//---------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------
+// section added for DLL usage
+#ifndef __MAIN_H__
+#define __MAIN_H__
+
+#include <windows.h>
+
+#define DLLEXPORT __declspec(dllexport)
+//#define DLLEXPORT extern "C" __declspec(dllexport)
+
+
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+char* DLLEXPORT getTextBBoxes(char* path, int w, int h);
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif // __MAIN_H__
+//---------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------
 
 namespace trg {
 //---------------------------------------------------------------------------------------------
