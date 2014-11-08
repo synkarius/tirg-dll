@@ -6,18 +6,20 @@ int main() {
 
     size_t picWidth = 300;
     size_t picHeight = 225;
-    char *picName = "222t.raw";
+    char *picName = "222t.png";
 
     char buf[picWidth * picHeight * 3];
     FILE *fp = fopen(picName, "rb");
     fread(buf, 1, sizeof(buf), fp);
     fclose(fp);
 
-    std::vector<std::vector<trg::Rgb> > a(picHeight, picWidth);
+    //std::vector<std::vector<trg::Rgb> > a(picHeight, picWidth);
+    std::vector<std::vector<trg::Rgb>> a (picHeight, std::vector<trg::Rgb>(picWidth, {0, 0, 0}));
+    int pngSignature=0;
 
     for (size_t y = 0; y < picHeight; ++y) {
         for (size_t x = 0; x < picWidth; ++x) {
-            size_t pos = 3 * y * picWidth + 3 * x;
+            size_t pos = (3 * y * picWidth + 3 * x)+pngSignature;
             trg::Rgb pixel = {buf[pos], buf[pos + 1], buf[pos + 2]};
             a[y][x] = pixel;
         }

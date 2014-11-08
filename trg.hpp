@@ -32,6 +32,16 @@ const double pl_min = 0.5;
 //---------------------------------------------------------------------------------------------
 //---------------------------------------------------------------------------------------------
 
+// added to fix strange called to std::vector<std::vector<T>>.assign()
+template<typename T>
+std::vector<std::vector<T>> assign2D(int h, int w, T filler) {
+    std::vector<std::vector<T>> result (h, std::vector<T>(w, filler));
+    return result;
+}
+
+//---------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------
+
 void print_b(const char* path) {
     freopen(path, "wt", stdout);
     for (int y = 0; y < h; ++y) {
@@ -44,8 +54,10 @@ void print_b(const char* path) {
 //---------------------------------------------------------------------------------------------
 
 void calc_lums(const std::vector<std::vector<Rgb> > &raw) {
-    lum.assign(h, w);
-    cyx.assign(h, w);
+    //lum.assign(h, w);
+    lum = assign2D(h, w, (UC)0);
+    //cyx.assign(h, w);
+    cyx = assign2D(h, w, (UC)0);
     int x, y;
     int zh = h / 1;
     int zw = w / 3;
@@ -145,9 +157,11 @@ int stroke_calc(int p1, int q1) {
 void build_b() {
     int ww = w / dw;
     int hh = h / dh;
-    b.assign(h + 1, w + 3);
+    //b.assign(h + 1, w + 3);
+    b = assign2D(h + 1, w + 3, (short)0);
     for (int dy = 0; dy <= dh / 2; dy += dh / 2) {
-        std::vector<std::vector<int> > m(hh + 1, ww + 3);
+        //std::vector<std::vector<int> > m(hh + 1, ww + 3);
+        std::vector<std::vector<int> > m (hh + 1, std::vector<int> (ww + 3, 0));
         for (int i = 1 + dy; i < h; i += dh)
             for (int j = 1; j < w; j += dw)
                 m[(i - 1 - dy) / dh][(j - 1) / dw] = stroke_calc(i, j);
