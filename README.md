@@ -1,12 +1,12 @@
 #TiRG-dll
 ##TiRG text bounding box finder as a dll
 
-TiRG-dll has two exported functions for use with **ctypes** or other foreign function libraries:
+TiRG-dll has two exported functions for use with _ctypes_ or other foreign function libraries:
 ```
 char* getTextBBoxesFromBytes(char* b, int w, int h);
 char* getTextBBoxesFromFile(char* path, int w, int h);
 ```
-The first, **getTextBBoxesFromBytes**, can be passed a bytes object or equivalent. Each byte in the bytes object represents an RGB value of a pixel in the image, so every third byte begins a new pixel. There should be no alpha channel. The second, **getTextBBoxesFromFile**, takes the path of a raw image file, basically a bytes object written to disk. Both functions require the width and height of the image. 
+The first, _getTextBBoxesFromBytes_, can be passed a bytes object or equivalent. Each byte in the bytes object represents an RGB value of a pixel in the image, so every third byte begins a new pixel. There should be no alpha channel. The second, _getTextBBoxesFromFile_, takes the path of a raw image file, basically a bytes object written to disk. Both functions require the width and height of the image. 
 
 Both return an identical C string, a comma separated list of integers. The integers are in sets of four where the first two represent the X and Y coordinates of the top left corner of a text bounding box, and the second two represent the X and Y coordinates of the bottom right corner. An example might look like the following.
 ```
