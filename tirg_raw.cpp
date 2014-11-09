@@ -1,43 +1,49 @@
 #include "stdafx.h"
 #include "trg.hpp"
+#include <fstream>
 #define DLLEXPORT extern "C" __declspec(dllexport)
 
 //---------------------------------------------------------------------------------------------
 //---------------------------------------------------------------------------------------------
 // section added for DLL usage
 DLLEXPORT char* getTextBBoxes(char* path, int w, int h) {
-	//    size_t picWidth = w;
-	//    size_t picHeight = h;
-	//    char *picName = path;
-	//
-	//    char buf[picWidth * picHeight * 3];
-	//    FILE *fp = fopen(picName, "rb");
-	//    fread(buf, 1, sizeof(buf), fp);
-	//    fclose(fp);
-	//
-	//    //std::vector<std::vector<trg::Rgb> > a(picHeight, picWidth);
-	//    std::vector<std::vector<trg::Rgb>> a (picHeight, std::vector<trg::Rgb>(picWidth, {0, 0, 0}));
-	//
-	//    for (size_t y = 0; y < picHeight; ++y) {
-	//        for (size_t x = 0; x < picWidth; ++x) {
-	//            size_t pos = 3 * y * picWidth + 3 * x;
-	//            trg::Rgb pixel = {buf[pos], buf[pos + 1], buf[pos + 2]};
-	//            a[y][x] = pixel;
-	//        }
-	//    }
-	//
-	//    std::vector<trg::Rect> r = trg::get_textlike_regions(a);
-	//
-	//
-	//    printf("Detected %d region(s):\n", r.size());
-	//    if (!r.empty()) {
-	//        for (size_t i = 0; i < r.size(); ++i) {
-	//            printf("%3d. (%d, %d) (%d, %d)\n", i + 1, r[i].x1, r[i].y1, r[i].x2, r[i].y2);
-	//        }
-	//    }
+	size_t picWidth = w;
+	size_t picHeight = h;
+	char *picName = path;
+	std::vector<char> buf(picWidth * picHeight * 3);
 
+	std::filebuf fb;
+	fb.open(path, std::ios_base::in | std::ios_base::binary);
+	fb.sgetn((char*)&buf[0], buf.size() * sizeof(buf[0]));
+
+	//std::vector<std::vector<trg::Rgb> > a(picHeight, picWidth);
+	std::vector<std::vector<trg::Rgb>> a (picHeight, std::vector<trg::Rgb>(picWidth, {0, 0, 0}));
+
+	for (size_t y = 0; y < picHeight; ++y) {
+	    for (size_t x = 0; x < picWidth; ++x) {
+	        size_t pos = 3 * y * picWidth + 3 * x;
+	        trg::Rgb pixel = {buf[pos], buf[pos + 1], buf[pos + 2]};
+	        a[y][x] = pixel;
+	    }
+	}
+	std::vector<trg::Rect> r = trg::get_textlike_regions(a);
 
 	return path;
+}
+
+DLLEXPORT char* getTextBBoxesFromBytes(char* b, int w, int h) {
+	std::vector<std::vector<trg::Rgb>> a(h, std::vector<trg::Rgb>(w, { 0, 0, 0 }));
+
+	for (size_t y = 0; y < h; ++y) {
+		for (size_t x = 0; x < w; ++x) {
+			size_t pos = 3 * y * w + 3 * x;
+			trg::Rgb pixel = { b[pos], b[pos + 1], b[pos + 2] };
+			a[y][x] = pixel;
+		}
+	}
+	std::vector<trg::Rect> r = trg::get_textlike_regions(a);
+
+	return "DLL function not finished yet";
 }
 
 //---------------------------------------------------------------------------------------------
