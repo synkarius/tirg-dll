@@ -1,11 +1,2 @@
-*.cbp
-*.layout
-Debug/
-Release/
-dllmain.cpp
-ReadMe.txt
-stdafx.cpp
-stdafx.h
-targetver.h
-tirg-dll.vcxproj
-tirg-dll.vcxproj.filters
+*.vs
+*build/
