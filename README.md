@@ -1,5 +1,5 @@
 #TiRG-dll
-##TiRG text bounding box finder as a dll
+##TiRG text bounding box finder as a dll 32-bit or 64-bit
 
 TiRG-dll has two exported functions for use with _ctypes_ or other foreign function libraries:
 ```
@@ -17,6 +17,19 @@ The above string represents four bounding boxes:
 (1,8,108,15), (1,38,58,45), (1,53,58,60), (3,83,120,90)
 ```
 
+Run requirements:
+- KERNEL32.dll
+
+Build requires:
+- CMake => 3.20
+- [Microsoft Visual Studio/Microsoft Visual Code](https://visualstudio.microsoft.com/)]
+- [Microsoft Visual C++ Redistributable](https://docs.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist)] => msvc 140
+
+Compiled DLL output
+`root\build\source\Release`
+
+Ensures statically linked dependencies with `dumpbin.exe /DEPENDENTS`:
+`'C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.31.31103\bin\Hostx86\x86\dumpbin.exe' /DEPENDENTS C:\tirg-dll\build\source\Release\tirg-32.dll`
 
 Original website: http://tirg.sourceforge.net
 
